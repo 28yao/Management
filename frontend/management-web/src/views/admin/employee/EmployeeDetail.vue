@@ -10,7 +10,7 @@
 
       <el-form :model="employee" label-width="100px">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="12" v-if="!isNew">
             <el-form-item label="工号">
               <el-input v-model="employee.empNo" disabled />
             </el-form-item>
@@ -50,6 +50,11 @@
           <el-col :span="12">
             <el-form-item label="登录账号">
               <el-input v-model="employee.account" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="isNew">
+            <el-form-item label="初始密码">
+              <el-input v-model="employee.password" type="password" placeholder="请输入初始密码" />
             </el-form-item>
           </el-col>
         </el-row>

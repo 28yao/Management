@@ -56,17 +56,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee create(Employee employee) {
-        // 检查工号是否重复
-        Long count = employeeMapper.selectCount(
-                new LambdaQueryWrapper<Employee>()
-                        .eq(Employee::getEmpNo, employee.getEmpNo())
-        );
-        if (count > 0) {
-            throw new BusinessException("工号已存在");
-        }
+        // 自动生成工号
+        employee.setEmpNo(generateEmpNo());
 
         // 检查账号是否重复
-        count = employeeMapper.selectCount(
+        Long count = employeeMapper.selectCount(
                 new LambdaQueryWrapper<Employee>()
                         .eq(Employee::getAccount, employee.getAccount())
         );
@@ -79,6 +73,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(1);
         employeeMapper.insert(employee);
         return employee;
+    }
+
+    /**
+     * 自动生成工号
+     * 格式：EMP + 6位序号（如 EMP000001）
+     *
+     * @return 工号
+     */
+    private String generateEmpNo() {
+        // 获取当前最大工号
+        Long count = employeeMapper.selectCount(null);
+        return String.format("EMP%06d", count + 1);
     }
 
     @Override

@@ -1,13 +1,16 @@
 package com.management.config;
 
+import com.management.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security 配置类
@@ -17,14 +20,20 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     /**
      * 白名单路径 - 无需认证
      */
     private static final String[] WHITE_LIST = {
             "/auth/login",
-            "/auth/register",
             "/error"
     };
 
@@ -50,10 +59,12 @@ public class SecurityConfig {
                 // 其他请求需要认证
                 .anyRequest().authenticated()
                 .and()
-                // 禁用 form 登页
+                // 禁用 form 登录
                 .formLogin().disable()
-                // 禎用 httpBasic
-                .httpBasic().disable();
+                // 禁用 httpBasic
+                .httpBasic().disable()
+                // 添加 JWT 过滤器
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

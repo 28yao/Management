@@ -14,12 +14,12 @@
         </el-form-item>
       </el-form>
 
-      <el-table :data="records" border stripe>
-        <el-table-column prop="empId" label="员工ID" width="80" />
-        <el-table-column prop="date" label="日期" width="120" />
-        <el-table-column prop="clockIn" label="上班打卡" width="100" />
-        <el-table-column prop="clockOut" label="下班打卡" width="100" />
-        <el-table-column label="状态" width="100">
+      <el-table :data="records" border stripe style="width: 100%">
+        <el-table-column prop="empId" label="员工ID" min-width="100" />
+        <el-table-column prop="date" label="日期" min-width="150" />
+        <el-table-column prop="clockIn" label="上班打卡" min-width="150" />
+        <el-table-column prop="clockOut" label="下班打卡" min-width="150" />
+        <el-table-column label="状态" min-width="120" align="center">
           <template #default="{ row }">
             <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
           </template>

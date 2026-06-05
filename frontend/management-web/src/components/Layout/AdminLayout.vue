@@ -20,6 +20,10 @@
           <el-icon><OfficeBuilding /></el-icon>
           <span>部门管理</span>
         </el-menu-item>
+        <el-menu-item index="/admin/positions">
+          <el-icon><Collection /></el-icon>
+          <span>职位管理</span>
+        </el-menu-item>
         <el-menu-item index="/admin/employees">
           <el-icon><User /></el-icon>
           <span>员工管理</span>

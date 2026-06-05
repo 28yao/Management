@@ -37,7 +37,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="职位">
-              <el-input v-model="employee.position" />
+              <el-select v-model="employee.position" placeholder="请选择职位">
+                <el-option v-for="pos in positions" :key="pos.id" :label="pos.name" :value="pos.name" />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -72,10 +74,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getEmployeeDetail, updateEmployee, createEmployee } from '@/api/employee'
 import { getDepartmentList } from '@/api/department'
+import { getPositionList } from '@/api/position'
 
 const route = useRoute()
 const router = useRouter()
 const departments = ref<any[]>([])
+const positions = ref<any[]>([])
 const employee = ref<any>({
   empNo: '',
   name: '',
@@ -109,6 +113,15 @@ async function loadDepartments() {
   }
 }
 
+async function loadPositions() {
+  try {
+    const res = await getPositionList()
+    positions.value = res.data || []
+  } catch (error) {
+    console.error('获取职位列表失败', error)
+  }
+}
+
 async function handleSave() {
   try {
     if (isNew) {
@@ -126,6 +139,7 @@ async function handleSave() {
 
 onMounted(() => {
   loadDepartments()
+  loadPositions()
   loadEmployee()
 })
 </script>

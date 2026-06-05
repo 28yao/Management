@@ -9,6 +9,7 @@
           <div class="clock-status">
             <p>上班：{{ todayRecord?.clockIn || '未打卡' }}</p>
             <p>下班：{{ todayRecord?.clockOut || '未打卡' }}</p>
+            <p>状态：<el-tag :type="getStatusType(todayRecord?.status)">{{ getStatusText(todayRecord?.status) }}</el-tag></p>
           </div>
         </el-card>
       </el-col>
@@ -25,6 +26,30 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <el-card class="history-card">
+      <template #header>
+        <span>最近 7 天打卡记录</span>
+      </template>
+      <el-table :data="recentRecords" border stripe>
+        <el-table-column prop="date" label="日期" width="120" />
+        <el-table-column prop="clockIn" label="上班打卡" width="120">
+          <template #default="{ row }">
+            {{ row.clockIn || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="clockOut" label="下班打卡" width="120">
+          <template #default="{ row }">
+            {{ row.clockOut || '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column label="状态">
+          <template #default="{ row }">
+            <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
   </div>
 </template>
 
@@ -33,11 +58,24 @@ import { ref, onMounted } from 'vue'
 import { getMyAttendance, getMyStatistics } from '@/api/attendance'
 
 const todayRecord = ref<any>(null)
+const recentRecords = ref<any[]>([])
 const stats = ref({
   normalDays: 0,
   lateDays: 0,
   earlyDays: 0
 })
+
+function getStatusType(status?: number) {
+  if (status === undefined || status === null) return 'info'
+  const map: Record<number, string> = { 0: 'info', 1: 'success', 2: 'warning', 3: 'warning', 4: 'danger' }
+  return map[status] || 'info'
+}
+
+function getStatusText(status?: number) {
+  if (status === undefined || status === null) return '未打卡'
+  const map: Record<number, string> = { 0: '缺勤', 1: '正常', 2: '迟到', 3: '早退', 4: '迟到且早退' }
+  return map[status] || '未知'
+}
 
 onMounted(async () => {
   try {
@@ -45,14 +83,15 @@ onMounted(async () => {
     const month = new Date().toISOString().slice(0, 7)
 
     const [attRes, statsRes] = await Promise.all([
-      getMyAttendance({ current: 1, size: 1, month }),
+      getMyAttendance({ current: 1, size: 7, month }),
       getMyStatistics({ month })
     ])
 
-    if (attRes.data?.records?.length > 0) {
-      const record = attRes.data.records.find((r: any) => r.date === today)
-      todayRecord.value = record || null
-    }
+    const records = attRes.data?.records || []
+    recentRecords.value = records
+
+    // 查找今日记录
+    todayRecord.value = records.find((r: any) => r.date === today) || null
 
     stats.value = statsRes.data || { normalDays: 0, lateDays: 0, earlyDays: 0 }
   } catch (error) {
@@ -64,6 +103,10 @@ onMounted(async () => {
 <style scoped>
 .clock-status, .statistics {
   font-size: 16px;
-  line-height: 2;
+  line-height: 2.5;
+}
+
+.history-card {
+  margin-top: 20px;
 }
 </style>

@@ -118,7 +118,7 @@ function handleDetail(row: any) {
 async function handleResetPassword(row: any) {
   try {
     await ElMessageBox.confirm(`确定重置 ${row.name} 的密码吗？`, '提示', { type: 'warning' })
-    const res = await resetPassword(row.id)
+    const res: any = await resetPassword(row.id)
     ElMessage.success(res.message)
   } catch (error) {
     // 取消

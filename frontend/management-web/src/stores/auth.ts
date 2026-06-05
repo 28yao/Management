@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { getToken, setToken, removeToken, getUserInfo, setUserInfo, clearAuth } from '@/utils/auth'
+import { getToken, setToken, getUserInfo, setUserInfo, clearAuth } from '@/utils/auth'
 
 /**
  * 认证状态 Store

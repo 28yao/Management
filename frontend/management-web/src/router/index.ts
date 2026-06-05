@@ -152,7 +152,7 @@ const router = createRouter({
  * 路由守卫
  * 处理登录验证和角色权限
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore()
 
   // 不需要认证的页面直接放行

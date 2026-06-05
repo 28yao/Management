@@ -44,6 +44,7 @@ backend/management-api/
 │   ├── controller/                         # 控制器层
 │   │   ├── AuthController.java             # 认证接口
 │   │   ├── DepartmentController.java       # 部门管理接口
+│   │   ├── PositionController.java         # 职位管理接口
 │   │   ├── EmployeeController.java         # 员工管理接口
 │   │   ├── AttendanceController.java       # 考勤打卡接口
 │   │   ├── LeaveController.java            # 请假管理接口
@@ -51,12 +52,14 @@ backend/management-api/
 │   ├── service/                            # 服务层
 │   │   ├── AuthService.java
 │   │   ├── DepartmentService.java
+│   │   ├── PositionService.java
 │   │   ├── EmployeeService.java
 │   │   ├── AttendanceService.java
 │   │   ├── LeaveService.java
 │   │   └── NotificationService.java
 │   ├── mapper/                             # 数据访问层
 │   │   ├── DepartmentMapper.java
+│   │   ├── PositionMapper.java
 │   │   ├── EmployeeMapper.java
 │   │   ├── AttendanceMapper.java
 │   │   ├── LeaveRecordMapper.java
@@ -64,6 +67,7 @@ backend/management-api/
 │   │   └── NotificationMapper.java
 │   ├── entity/                             # 实体类
 │   │   ├── Department.java
+│   │   ├── Position.java
 │   │   ├── Employee.java
 │   │   ├── Attendance.java
 │   │   ├── LeaveRecord.java
@@ -94,7 +98,9 @@ backend/management-api/
 │       ├── V4__init_leave.sql
 │       ├── V5__init_makeup_clock.sql
 │       ├── V6__init_notification.sql
-│       └── V7__init_admin.sql              # 预置管理员账号
+│       ├── V7__init_system_config.sql
+│       ├── V8__init_admin.sql              # 预置管理员账号
+│       └── V9__init_position.sql           # 预置职位数据
 └── pom.xml
 ```
 
@@ -214,7 +220,19 @@ frontend/management-web/
 **约束**：
 - `name` 字段添加唯一索引
 
-#### 3.2.2 employee（员工表）
+#### 3.2.2 position（职位表）
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| id | BIGINT | 是 | 主键，自增 |
+| name | VARCHAR(50) | 是 | 职位名称，唯一 |
+| created_at | DATETIME | 是 | 创建时间 |
+| updated_at | DATETIME | 是 | 更新时间 |
+
+**约束**：
+- `name` 字段添加唯一索引
+
+#### 3.2.3 employee（员工表）
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
@@ -362,7 +380,16 @@ frontend/management-web/
 | PUT | /{id} | 修改部门 | 管理员 |
 | DELETE | /{id} | 删除部门 | 管理员 |
 
-#### 4.2.3 员工接口 `/api/employees`
+#### 4.2.3 职位接口 `/api/positions`
+
+| 方法 | 路径 | 说明 | 权限 |
+|------|------|------|------|
+| GET | / | 获取职位列表 | 已认证 |
+| POST | / | 新增职位 | 管理员 |
+| PUT | /{id} | 修改职位 | 管理员 |
+| DELETE | /{id} | 删除职位 | 管理员 |
+
+#### 4.2.4 员工接口 `/api/employees`
 
 | 方法 | 路径 | 说明 | 权限 |
 |------|------|------|------|
@@ -746,6 +773,7 @@ public int calculateLeaveDays(LocalDate startDate, LocalDate endDate) {
 | Spec 章节 | Spec 功能点 | 实现位置 |
 |-----------|-------------|----------|
 | 2.2 | 部门管理 | DepartmentController + DepartmentManage.vue |
+| 2.3 | 职位管理 | PositionController + PositionManage.vue |
 | 3.1 | 员工信息字段 | Employee 实体类 |
 | 3.2 | 员工管理功能 | EmployeeController + EmployeeManage.vue |
 | 3.3 | 员工自助 | ProfileView.vue |
@@ -753,6 +781,7 @@ public int calculateLeaveDays(LocalDate startDate, LocalDate endDate) {
 | 4.2 | 打卡功能 | AttendanceController + ClockView.vue |
 | 4.3 | 补卡申请 | MakeupClockController + MakeupClockApply.vue |
 | 4.4 | 考勤统计 | AttendanceController + AttendanceStatistics.vue |
+| 4.5 | 员工首页打卡历史 | EmployeeDashboard.vue |
 | 5.1 | 假期类型 | LeaveTypeEnum |
 | 5.2 | 请假申请 | LeaveController + LeaveApply.vue |
 | 5.3 | 请假审批 | LeaveController + LeaveApproval.vue |

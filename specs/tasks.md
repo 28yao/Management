@@ -86,6 +86,9 @@
 | **SystemConfig 实体** | | | |
 | 2.2.13 | [TDD] SystemConfig 实体单元测试 | `backend/.../test/entity/SystemConfigTest.java` | - | plan §3.2.7 |
 | 2.2.14 | 创建 SystemConfig 实体类 | `backend/.../entity/SystemConfig.java` | 2.2.13 | plan §3.2.7 |
+| **Position 实体** | | | |
+| 2.2.15 | [TDD] Position 实体单元测试 | `backend/.../test/entity/PositionTest.java` | - | spec §2.3 |
+| 2.2.16 | 创建 Position 实体类 | `backend/.../entity/Position.java` | 2.2.15 | spec §2.3 |
 
 ### 2.3 Mapper 接口
 
@@ -97,6 +100,7 @@
 | 2.3.4 | [P] 创建 LeaveRecordMapper 接口 | `backend/.../mapper/LeaveRecordMapper.java` | 2.2.8 | plan §2.1 |
 | 2.3.5 | [P] 创建 MakeupClockMapper 接口 | `backend/.../mapper/MakeupClockMapper.java` | 2.2.10 | plan §2.1 |
 | 2.3.6 | [P] 创建 NotificationMapper 接口 | `backend/.../mapper/NotificationMapper.java` | 2.2.12 | plan §2.1 |
+| 2.3.7 | [P] 创建 PositionMapper 接口 | `backend/.../mapper/PositionMapper.java` | 2.2.16 | spec §2.3 |
 | 2.3.7 | [P] 创建 SystemConfigMapper 接口 | `backend/.../mapper/SystemConfigMapper.java` | 2.2.14 | plan §2.1 |
 
 ---
@@ -119,6 +123,13 @@
 |---|------|----------|------|------|
 | 3.2.1 | [TDD] DepartmentService 单元测试（CRUD、删除前检查员工） | `backend/.../test/service/DepartmentServiceTest.java` | - | spec §2.2 |
 | 3.2.2 | 创建 DepartmentService 实现 | `backend/.../service/DepartmentService.java` | 3.2.1, 2.3.1, 2.3.2 | spec §2.2 |
+
+### 3.2.1 职位服务
+
+| # | 任务 | 文件路径 | 依赖 | 追踪 |
+|---|------|----------|------|------|
+| 3.2.1.1 | [TDD] PositionService 单元测试（CRUD、删除前检查员工） | `backend/.../test/service/PositionServiceTest.java` | - | spec §2.3 |
+| 3.2.1.2 | 创建 PositionService 实现 | `backend/.../service/PositionService.java` | 3.2.1.1, 2.3.7, 2.3.2 | spec §2.3 |
 
 ### 3.3 员工服务
 
@@ -177,6 +188,7 @@
 | 4.1.1 | [P] 创建登录请求 DTO | `backend/.../dto/request/LoginRequest.java` | - | plan §4.2.1 |
 | 4.1.2 | [P] 创建修改密码请求 DTO | `backend/.../dto/request/ChangePasswordRequest.java` | - | plan §4.2.1 |
 | 4.1.3 | [P] 创建部门请求 DTO（新增/修改） | `backend/.../dto/request/DepartmentRequest.java` | - | plan §4.2.2 |
+| 4.1.3.1 | [P] 创建职位请求 DTO（新增/修改） | `backend/.../dto/request/PositionRequest.java` | - | spec §2.3 |
 | 4.1.4 | [P] 创建员工请求 DTO（新增/修改） | `backend/.../dto/request/EmployeeRequest.java` | - | plan §4.2.3 |
 | 4.1.5 | [P] 创建员工查询 DTO（分页、筛选） | `backend/.../dto/request/EmployeeQueryRequest.java` | - | plan §4.2.3 |
 | 4.1.6 | [P] 创建请假请求 DTO | `backend/.../dto/request/LeaveRequest.java` | - | plan §4.2.5 |
@@ -206,6 +218,9 @@
 | **DepartmentController** | | | |
 | 4.2.3 | [TDD] DepartmentController 接口测试（列表、新增、修改、删除） | `backend/.../test/controller/DepartmentControllerTest.java` | - | plan §4.2.2 |
 | 4.2.4 | 创建 DepartmentController | `backend/.../controller/DepartmentController.java` | 4.2.3, 3.2.2, 4.1.3, 4.1.13 | plan §4.2.2 |
+| **PositionController** | | | |
+| 4.2.3.1 | [TDD] PositionController 接口测试（列表、新增、修改、删除） | `backend/.../test/controller/PositionControllerTest.java` | - | spec §2.3 |
+| 4.2.3.2 | 创建 PositionController | `backend/.../controller/PositionController.java` | 4.2.3.1, 3.2.1.2, 4.1.3.1 | spec §2.3 |
 | **EmployeeController** | | | |
 | 4.2.5 | [TDD] EmployeeController 接口测试（列表、详情、新增、修改、离职、重置密码） | `backend/.../test/controller/EmployeeControllerTest.java` | - | plan §4.2.3 |
 | 4.2.6 | 创建 EmployeeController | `backend/.../controller/EmployeeController.java` | 4.2.5, 3.3.2, 4.1.4-4.1.5, 4.1.14 | plan §4.2.3 |
@@ -287,6 +302,7 @@
 |---|------|----------|------|------|
 | 6.2.1 | [P] 创建认证 API 服务（登录、登出、获取用户、修改密码） | `frontend/.../api/auth.ts` | 1.2.6 | plan §4.2.1 |
 | 6.2.2 | [P] 创建部门 API 服务（列表、新增、修改、删除） | `frontend/.../api/department.ts` | 1.2.6 | plan §4.2.2 |
+| 6.2.2.1 | [P] 创建职位 API 服务（列表、新增、修改、删除） | `frontend/.../api/position.ts` | 1.2.6 | spec §2.3 |
 | 6.2.3 | [P] 创建员工 API 服务（列表、详情、新增、修改、离职、重置密码） | `frontend/.../api/employee.ts` | 1.2.6 | plan §4.2.3 |
 | 6.2.4 | [P] 创建考勤 API 服务（打卡、记录、统计） | `frontend/.../api/attendance.ts` | 1.2.6 | plan §4.2.4 |
 | 6.2.5 | [P] 创建请假 API 服务（申请、记录、审批） | `frontend/.../api/leave.ts` | 1.2.6 | plan §4.2.5 |
@@ -306,6 +322,7 @@
 |---|------|----------|------|------|
 | 6.4.1 | [P] 创建管理员仪表盘（员工总数、部门数量、今日出勤、待审批数量） | `frontend/.../views/admin/dashboard/AdminDashboard.vue` | 6.2.3, 6.2.4, 6.2.5 | plan §8.1 |
 | 6.4.2 | [P] 创建部门管理页面（部门列表、新增/编辑/删除对话框） | `frontend/.../views/admin/department/DepartmentManage.vue` | 6.2.2 | spec §2.2 |
+| 6.4.2.1 | [P] 创建职位管理页面（职位列表、新增/编辑/删除对话框） | `frontend/.../views/admin/position/PositionManage.vue` | 6.2.2.1 | spec §2.3 |
 | 6.4.3 | [P] 创建员工管理页面（员工列表、筛选、新增/编辑对话框、离职操作） | `frontend/.../views/admin/employee/EmployeeManage.vue` | 6.2.3, 6.2.2 | spec §3.2 |
 | 6.4.4 | [P] 创建员工详情页面（查看员工信息、重置密码） | `frontend/.../views/admin/employee/EmployeeDetail.vue` | 6.2.3 | spec §3.2 |
 | 6.4.5 | [P] 创建考勤管理页面（考勤记录列表、按月/部门/员工筛选） | `frontend/.../views/admin/attendance/AttendanceManage.vue` | 6.2.4, 6.2.2, 6.2.3 | spec §4.4 |
@@ -359,12 +376,12 @@
 | 阶段 | 任务数 | 可并行任务 |
 |------|--------|-----------|
 | Phase 1: Foundation & Skeleton | 20 | 16 |
-| Phase 2: Domain Model & Domain Tests | 28 | 24 |
-| Phase 3: Application Use Cases & Tests | 16 | 0 |
-| Phase 4: API Contracts & Web API | 36 | 20 |
+| Phase 2: Domain Model & Domain Tests | 30 | 26 |
+| Phase 3: Application Use Cases & Tests | 18 | 0 |
+| Phase 4: API Contracts & Web API | 39 | 22 |
 | Phase 5: Infrastructure & Integration | 21 | 8 |
-| Phase 6: Frontend UI & Interaction | 38 | 30 |
-| **总计** | **159** | **98** |
+| Phase 6: Frontend UI & Interaction | 41 | 32 |
+| **总计** | **169** | **104** |
 
 ---
 

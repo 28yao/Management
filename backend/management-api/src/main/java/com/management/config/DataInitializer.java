@@ -3,6 +3,7 @@ package com.management.config;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.management.entity.Employee;
 import com.management.mapper.EmployeeMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,9 @@ public class DataInitializer implements CommandLineRunner {
 
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${ADMIN_PASSWORD:admin123}")
+    private String adminPassword;
 
     public DataInitializer(EmployeeMapper employeeMapper, PasswordEncoder passwordEncoder) {
         this.employeeMapper = employeeMapper;
@@ -43,11 +47,11 @@ public class DataInitializer implements CommandLineRunner {
             admin.setHireDate(java.time.LocalDate.of(2024, 1, 1));
             admin.setPosition("管理员");
             admin.setAccount("admin");
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.setRole(1);
             admin.setStatus(1);
             employeeMapper.insert(admin);
-            System.out.println("默认管理员账号创建成功: admin / admin123");
+            System.out.println("默认管理员账号创建成功: admin / " + adminPassword);
         }
     }
 }

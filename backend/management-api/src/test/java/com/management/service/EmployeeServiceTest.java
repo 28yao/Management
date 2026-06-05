@@ -93,6 +93,6 @@ class EmployeeServiceTest {
         String newPassword = employeeService.resetPassword(1L);
 
         assertNotNull(newPassword);
-        assertEquals("123456", newPassword);
+        assertEquals(8, newPassword.length());
     }
 }

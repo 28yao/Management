@@ -115,6 +115,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.updateById(employee);
     }
 
+    /**
+     * 默认重置密码
+     */
+    private static final String DEFAULT_PASSWORD = "123456";
+
     @Override
     public String resetPassword(Long id) {
         Employee employee = employeeMapper.selectById(id);
@@ -122,27 +127,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException("员工不存在");
         }
 
-        // 生成随机8位密码
-        String newPassword = generateRandomPassword();
-        employee.setPassword(passwordEncoder.encode(newPassword));
+        employee.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD));
         employeeMapper.updateById(employee);
-        return newPassword;
-    }
-
-    /**
-     * 生成随机密码
-     * 包含大小写字母和数字，长度8位
-     *
-     * @return 随机密码
-     */
-    private String generateRandomPassword() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-        java.util.Random random = new java.util.Random();
-        for (int i = 0; i < 8; i++) {
-            sb.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        return sb.toString();
+        return DEFAULT_PASSWORD;
     }
 
     @Override

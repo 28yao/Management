@@ -8,6 +8,7 @@ import com.management.exception.BusinessException;
 import com.management.mapper.EmployeeMapper;
 import com.management.service.AuthService;
 import com.management.util.JwtUtil;
+import com.management.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +78,29 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Map<String, Object> getCurrentUser() {
-        // TODO: 从 SecurityContext 获取当前用户
-        return new HashMap<>();
+        Long userId = SecurityUtil.getCurrentUserId();
+        if (userId == null) {
+            throw new BusinessException("未登录");
+        }
+
+        Employee employee = employeeMapper.selectById(userId);
+        if (employee == null) {
+            throw new BusinessException("用户不存在");
+        }
+
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", employee.getId());
+        userInfo.put("account", employee.getAccount());
+        userInfo.put("name", employee.getName());
+        userInfo.put("phone", employee.getPhone());
+        userInfo.put("email", employee.getEmail());
+        userInfo.put("empNo", employee.getEmpNo());
+        userInfo.put("hireDate", employee.getHireDate());
+        userInfo.put("position", employee.getPosition());
+        userInfo.put("deptId", employee.getDeptId());
+        userInfo.put("role", employee.getRole());
+
+        return userInfo;
     }
 
     @Override

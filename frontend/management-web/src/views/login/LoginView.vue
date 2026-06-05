@@ -82,7 +82,6 @@ async function handleLogin() {
     authStore.setAuth(token, user)
     ElMessage.success('登录成功')
 
-    // 根据角色跳转
     if (user.role === 1) {
       router.push('/admin/dashboard')
     } else {

@@ -1,10 +1,14 @@
 <template>
   <div class="attendance-statistics">
-    <h2>考勤统计</h2>
-    <p>此页面将在后续阶段实现</p>
+    <el-card>
+      <template #header>
+        <span>考勤统计</span>
+      </template>
+      <p>考勤统计功能开发中...</p>
+    </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-// 考勤统计 - 待实现
+// 考勤统计 - 待完善
 </script>

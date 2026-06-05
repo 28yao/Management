@@ -15,10 +15,8 @@ import java.time.LocalDate;
 public class EmployeeRequest {
 
     /**
-     * 工号
+     * 工号（自动生成，无需传入）
      */
-    @NotBlank(message = "工号不能为空")
-    @Size(max = 20, message = "工号不能超过20个字符")
     private String empNo;
 
     /**
